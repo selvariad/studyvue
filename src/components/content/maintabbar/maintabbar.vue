@@ -47,8 +47,8 @@
   </tabbar>
 </template>
 <script>
-import tabbar from "../../common/tabbar";
-import tabbaritem from "../../common/tabbaritem";
+import tabbar from "../../common/tabbar/tabbar";
+import tabbaritem from "../../common/tabbar/tabbaritem";
 export default {
   name: "maintabbar",
   components: {
