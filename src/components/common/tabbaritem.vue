@@ -41,17 +41,4 @@ export default {
 };
 </script>
 <style scoped>
-.tab-bar-item {
-  flex: 1; /* 不管其内容如何，使所有弹性项目的长度均相同 */
-  text-align: center;
-  height: 49px;
-  font-size: 14px;
-  margin-top: 3px;
-}
-.tab-bar-item img {
-  height: 24px;
-  width: 24px;
-  vertical-align: middle;
-  margin-bottom: 2px;
-}
 </style>
