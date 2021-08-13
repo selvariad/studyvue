@@ -3,15 +3,18 @@
     <navbar class="home-nav">
       <template #center>购物街</template>
     </navbar>
+    <homeswiper :banners="banners"></homeswiper>
   </div>
 </template>
 <script>
 import navbar from "../../components/common/navbar/navbar";
+import homeswiper from "../home/childcomps/homeswiper";
 import { gethomedata } from "../../network/home";
 export default {
   name: "home",
   components: {
     navbar,
+    homeswiper,
   },
   data() {
     return {
@@ -19,6 +22,7 @@ export default {
       recommends: [],
     };
   },
+  //生命周期函数笔记在学习router的appvue处
   created() {
     //请求多个数据
     gethomedata().then(
