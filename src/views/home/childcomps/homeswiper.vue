@@ -32,6 +32,7 @@ import "swiper/components/pagination/pagination.scss";
 import "swiper/components/scrollbar/scrollbar.scss";
 // install Swiper modules
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
+//对于插件的兼容性问题，安装node-sass:6.x,sass-loader:10.x就能实现运行了
 export default {
   components: {
     Swiper,

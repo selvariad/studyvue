@@ -21,7 +21,7 @@ export default {
   display: flex;
   line-height: 44px;
   text-align: center;
-  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 1px rgba(90, 90, 90, 0.2);
 }
 .left,
 .right {

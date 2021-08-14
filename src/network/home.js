@@ -6,3 +6,14 @@ export function gethomedata() {
     url: '/home/multidata',
   })
 }
+//请求goods的数据，因为涉及多个参数拼接，详见axios main.js里面写的笔记
+//所以要将params分开来方便管理，
+export function gethomegoods(type, page) {
+  return request({
+    url: '/home/data',
+    params: {
+      type,
+      page,
+    }
+  })
+}

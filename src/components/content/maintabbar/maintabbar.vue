@@ -1,5 +1,5 @@
 <template>
-  <tabbar>
+  <tabbar class="tabbar">
     <tabbaritem path="/home">
       <template #tab-bar-item-icon>
         <img src="../../../assets/img/tabbar/home.svg" alt="" />
@@ -58,6 +58,9 @@ export default {
 };
 </script>
 <style scoped>
+.tabbar {
+  z-index: 999;
+}
 .tab-bar-item {
   flex: 1; /* 不管其内容如何，使所有弹性项目的长度均相同 */
   text-align: center;
