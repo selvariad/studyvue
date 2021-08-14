@@ -1,16 +1,42 @@
 <template>
-  <Swiper>
-    <Swiper-item v-for="(item, index) in banners" :key="index">
+  <swiper
+    :slides-per-view="1"
+    :space-between="50"
+    :pagination="{ clickable: true }"
+    :autoplay="{
+      delay: 2500,
+      disableOnInteraction: false,
+    }"
+  >
+    <swiper-slide v-for="(item, index) in banners" :key="index" class="banners">
       <a :href="item.link">
         <img :src="item.image" alt="" class="banners" />
       </a>
-    </Swiper-item>
-  </Swiper>
+    </swiper-slide>
+  </swiper>
 </template>
 <script>
-import { Swiper, SwiperItem } from "../../../components/common/swiper/index";
+// import Swiper core and required modules
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from "swiper";
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/swiper.scss";
+import "swiper/components/navigation/navigation.scss";
+import "swiper/components/pagination/pagination.scss";
+import "swiper/components/scrollbar/scrollbar.scss";
+// install Swiper modules
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 export default {
-  name: "homeswiper",
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
   props: {
     banners: {
       type: Array,
@@ -18,10 +44,6 @@ export default {
         return [];
       },
     },
-  },
-  components: {
-    Swiper,
-    SwiperItem,
   },
 };
 </script>
