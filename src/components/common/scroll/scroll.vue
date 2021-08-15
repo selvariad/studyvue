@@ -18,6 +18,13 @@ export default {
   data() {
     return {
       bs: null,
+      props: {
+        //从外部传入所需的参数来实现定制插件功能
+        probeType: {
+          type: Number,
+          default: 0,
+        },
+      },
     };
   },
   methods: {
@@ -27,6 +34,9 @@ export default {
       //xy是坐标，time是响应时间
       this.bs.scrollTo(x, y, time);
     },
+    finishpull() {
+      this.bs.finishPullUp();
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -34,7 +44,7 @@ export default {
         this.$refs.wrapper,
         {
           pullDownRefresh: true,
-          probeType: 3,
+          probeType: this.probeType,
           pullUpLoad: true,
           click: true,
           observeDOM: true,
@@ -42,17 +52,19 @@ export default {
         20 //拉动多久触发事件，单位ms
       );
       this.bs.on("pullingDown", () => {
-        console.log("上拉刷新");
+        console.log("下拉刷新");
         this.bs.finishPullDown();
       });
       this.bs.on("pullingUp", () => {
-        console.log("下拉刷新");
-        this.bs.finishPullUp();
+        // console.log("上拉刷新");
+        this.$emit("pullingUp");
+        // this.bs.finishPullUp();
       });
-      //传回滚动
-      // bs.on("scroll", (position) => {
-      //   console.log(position);
-      // });
+      // 传回滚动的位置
+      this.bs.on("scroll", (position) => {
+        // console.log(position);
+        this.$emit("position", position);
+      });
     });
   },
 };

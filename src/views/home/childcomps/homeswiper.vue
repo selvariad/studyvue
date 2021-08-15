@@ -1,3 +1,5 @@
+// 在新版swiper中已经封装好了组件，直接引入使用就可以
+//如果需要定制就在swiper标签里面写，具体效果去文档找api调用即可
 <template>
   <swiper
     :slides-per-view="1"

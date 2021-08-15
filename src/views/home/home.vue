@@ -5,7 +5,13 @@
         <div class="home-nav-title">购物街</div>
       </template>
     </navbar>
-    <scroll class="wrapper" ref="scroll">
+    <scroll
+      class="wrapper"
+      ref="scroll"
+      :probe-type="3"
+      @position="getpageposition"
+      @pullingUp="loaditem"
+    >
       <div class="banners">
         <homeswiper :banners="banners"></homeswiper>
       </div>
@@ -20,7 +26,7 @@
     </scroll>
     <!-- 在vue3中可以直接@监听组件的原生事件，但是在vue3以下则需要在@事件.native
     才能实现监听组件的原生事件 -->
-    <backtop @click="backclick" />
+    <backtop @click="backclick" v-show="isshowbacktop" />
   </div>
 </template>
 <script>
@@ -67,6 +73,7 @@ export default {
         },
       },
       currenttype: "pop",
+      isshowbacktop: false,
     };
   },
   //生命周期函数笔记在学习router的appvue处
@@ -117,6 +124,8 @@ export default {
           this.goods[type].list.push(...res.data.data.list);
           //请求完一页后要将page再+1请求下个页面
           this.goods[type].page += 1;
+          //告诉scroll组件滚动完成，才能再次刷新
+          this.$refs.scroll.finishpull();
         },
         (err) => {
           console.log(err);
@@ -125,7 +134,14 @@ export default {
     },
     backclick() {
       //利用$refs来获取组件中的内容进行操作
+      //这里就是调用了scroll组件中的scrollto函数
       this.$refs.scroll.scrollto(0, 0, 400);
+    },
+    getpageposition(i) {
+      this.isshowbacktop = -i.y > 1300;
+    },
+    loaditem() {
+      this.gethomegoods(this.currenttype);
     },
   },
 };
