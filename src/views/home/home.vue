@@ -5,24 +5,31 @@
         <div class="home-nav-title">购物街</div>
       </template>
     </navbar>
-    <div class="banners">
-      <homeswiper :banners="banners"></homeswiper>
-    </div>
-    <homeremview :recommend="recommends" />
-    <featureview />
-    <tabcontrol
-      :titles="['流行', '新款', '精选']"
-      class="tab-control"
-      @tabclick="tabclick"
-    />
-    <goodslist :goods="goods[currenttype].list" />
+    <scroll class="wrapper" ref="scroll">
+      <div class="banners">
+        <homeswiper :banners="banners"></homeswiper>
+      </div>
+      <homeremview :recommend="recommends" />
+      <featureview />
+      <tabcontrol
+        :titles="['流行', '新款', '精选']"
+        class="tab-control"
+        @tabclick="tabclick"
+      />
+      <goodslist :goods="goods[currenttype].list" />
+    </scroll>
+    <!-- 在vue3中可以直接@监听组件的原生事件，但是在vue3以下则需要在@事件.native
+    才能实现监听组件的原生事件 -->
+    <backtop @click="backclick" />
   </div>
 </template>
 <script>
 //将引用的子组件进行分类写开方便管理
 import navbar from "../../components/common/navbar/navbar";
+import scroll from "../../components/common/scroll/scroll";
 import tabcontrol from "../../components/content/tabcontrol/tabcontrol";
 import goodslist from "../../components/content/goods/goodslist";
+import backtop from "../../components/content/backtop/backtop";
 
 import homeswiper from "./childcomps/homeswiper";
 import homeremview from "./childcomps/homerecommendview";
@@ -38,6 +45,8 @@ export default {
     featureview,
     tabcontrol,
     goodslist,
+    scroll,
+    backtop,
   },
   data() {
     return {
@@ -114,10 +123,17 @@ export default {
         }
       );
     },
+    backclick() {
+      //利用$refs来获取组件中的内容进行操作
+      this.$refs.scroll.scrollto(0, 0, 400);
+    },
   },
 };
 </script>
 <style scoped>
+#home {
+  height: 100vh;
+}
 .home-nav {
   z-index: 999;
   position: fixed;
@@ -133,8 +149,12 @@ export default {
 }
 .tab-control {
   /* 实现拖拽fixed的功能 */
-  position: sticky;
+  /* position: sticky; */
   top: 44px;
   z-index: 9;
+}
+.wrapper {
+  height: 93.6vh;
+  overflow: hidden;
 }
 </style>
