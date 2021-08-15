@@ -9,10 +9,12 @@
 import BScroll from "@better-scroll/core";
 import Pulldown from "@better-scroll/pull-down";
 import Pullup from "@better-scroll/pull-up";
-import ObserveDom from "@better-scroll/observe-dom";
-BScroll.use(ObserveDom);
+import ObserveDom from "@better-scroll/observe-dom"; //解决滚不动的问题
+import ObserveImage from "@better-scroll/observe-image"; //解决数据刷新后content高度与实际不符的问题
 BScroll.use(Pulldown);
 BScroll.use(Pullup);
+BScroll.use(ObserveDom);
+BScroll.use(ObserveImage);
 export default {
   name: "scroll",
   data() {
@@ -30,7 +32,7 @@ export default {
   methods: {
     //将data中的scroll对象功能直接封装到methods中方便直接传参调用
     scrollto(x, y, time) {
-      //滚动到什么位置
+      //指定滚动到什么位置
       //xy是坐标，time是响应时间
       this.bs.scrollTo(x, y, time);
     },
@@ -48,11 +50,16 @@ export default {
           pullUpLoad: true,
           click: true,
           observeDOM: true,
+          observeImage: true,
         },
         20 //拉动多久触发事件，单位ms
       );
       this.bs.on("pullingDown", () => {
         console.log("下拉刷新");
+        //如果遇到莫名其妙的报错，可以在执行函数前面加&&判断
+        //例如:this.bs && this.bs.finishPullDown();
+        //意思是先判断this.bs是否存在，如果返回undefined或者null
+        //则不会继续往this.bs.finishPullDown();执行
         this.bs.finishPullDown();
       });
       this.bs.on("pullingUp", () => {

@@ -21,6 +21,11 @@ export default {
       },
     },
   },
+  methods: {
+    imgload() {
+      console.log("load");
+    },
+  },
 };
 </script>
 <style scoped>
