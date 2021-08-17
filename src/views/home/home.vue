@@ -5,6 +5,13 @@
         <div class="home-nav-title">购物街</div>
       </template>
     </navbar>
+    <tabcontrol
+      :titles="['流行', '新款', '精选']"
+      class="tab-control"
+      ref="tabcontrol1"
+      @tabclick="tabclick"
+      v-show="tabcontrolshow"
+    />
     <scroll
       class="wrapper"
       ref="scroll"
@@ -19,8 +26,9 @@
       <featureview />
       <tabcontrol
         :titles="['流行', '新款', '精选']"
-        class="tab-control"
+        ref="tabcontrol2"
         @tabclick="tabclick"
+        v-show="!tabcontrolshow"
       />
       <goodslist :goods="goods[currenttype].list" />
     </scroll>
@@ -73,7 +81,9 @@ export default {
         },
       },
       currenttype: "pop",
+      currentindex: 0,
       isshowbacktop: false,
+      tabcontrolshow: false,
     };
   },
   //生命周期函数笔记在学习router的appvue处
@@ -97,6 +107,8 @@ export default {
           this.currenttype = "sell";
           break;
       }
+      this.$refs.tabcontrol1.currentindex = index;
+      this.$refs.tabcontrol2.currentindex = index;
     },
     //将数据请求的具体步骤在methods里进行封装
     gethomedata() {
@@ -139,10 +151,23 @@ export default {
     },
     getpageposition(i) {
       this.isshowbacktop = -i.y > 1300;
+      //因为用了BS这个插件，所以原本做的原生吸顶没用了
+      //解决办法是将tabcontrol复制一份到BS外，利用v-show将在BS里的tab跟外的tab互斥显示
+      //但是这里的高度应该要用this.$refs.tabcontrol.$el.offsetTop来获取才对
+      this.tabcontrolshow = -i.y > 610;
     },
     loaditem() {
       this.gethomegoods(this.currenttype);
     },
+    // imgload() {
+    //原本是将swiper中的img监听@load=“imgload”然后emit出来在这里触发
+    //但是目前有bug不会触发(因为banner图片最大，一般都是载入最慢的)
+    //但是出于性能考虑，可以讲emit做节流阀
+    //所有的组件都有一个属性$el用于获取组件中的元素
+    //（具体的各种属性可以直接log this.$refs.tabcontrol看）
+    //element.offsetTop	返回元素的垂直偏移位置
+    //   console.log(this.$refs.tabcontrol.$el.offsetTop);
+    // },
   },
 };
 </script>
@@ -150,24 +175,19 @@ export default {
 #home {
   height: 100vh;
 }
+.tab-control {
+  position: relative;
+  z-index: 9;
+}
 .home-nav {
-  z-index: 999;
+  /* z-index: 999;
   position: fixed;
   left: 0;
-  right: 0;
+  right: 0; */
   background-color: var(--color-tint);
 }
 .home-nav-title {
   color: aliceblue;
-}
-.banners {
-  padding-top: 40px;
-}
-.tab-control {
-  /* 实现拖拽fixed的功能 */
-  /* position: sticky; */
-  top: 44px;
-  z-index: 9;
 }
 .wrapper {
   height: 93.6vh;

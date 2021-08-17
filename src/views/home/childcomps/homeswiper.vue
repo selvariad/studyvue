@@ -40,6 +40,19 @@ export default {
     Swiper,
     SwiperSlide,
   },
+  data() {
+    return {
+      isload: false,
+    };
+  },
+  methods: {
+    imgload() {
+      if (!this.isload) {
+        this.$emit("imgload");
+        this.isload = true;
+      }
+    },
+  },
   props: {
     banners: {
       type: Array,

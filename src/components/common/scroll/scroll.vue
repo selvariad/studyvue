@@ -41,40 +41,37 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => {
-      this.bs = new BScroll(
-        this.$refs.wrapper,
-        {
+    setTimeout(
+      () => {
+        this.bs = new BScroll(this.$refs.wrapper, {
           pullDownRefresh: true,
           probeType: this.probeType,
           pullUpLoad: true,
           click: true,
           observeDOM: true,
           observeImage: true,
-        },
-        20 //拉动多久触发事件，单位ms
-      );
-      this.bs.on("pullingDown", () => {
-        console.log("下拉刷新");
-        //如果遇到莫名其妙的报错，可以在执行函数前面加&&判断
-        //例如:this.bs && this.bs.finishPullDown();
-        //意思是先判断this.bs是否存在，如果返回undefined或者null
-        //则不会继续往this.bs.finishPullDown();执行
-        this.bs.finishPullDown();
-      });
-      this.bs.on("pullingUp", () => {
-        // console.log("上拉刷新");
-        this.$emit("pullingUp");
-        // this.bs.finishPullUp();
-      });
-      // 传回滚动的位置
-      this.bs.on("scroll", (position) => {
-        // console.log(position);
-        this.$emit("position", position);
-      });
-    });
+        });
+        this.bs.on("pullingDown", () => {
+          console.log("下拉刷新");
+          //如果遇到莫名其妙的报错，可以在执行函数前面加&&判断
+          //例如:this.bs && this.bs.finishPullDown();
+          //意思是先判断this.bs是否存在，如果返回undefined或者null
+          //则不会继续往this.bs.finishPullDown();执行
+          this.bs.finishPullDown();
+        });
+        this.bs.on("pullingUp", () => {
+          // console.log("上拉刷新");
+          this.$emit("pullingUp");
+          // this.bs.finishPullUp();
+        });
+        // 传回滚动的位置
+        this.bs.on("scroll", (position) => {
+          // console.log(-position.y);
+          this.$emit("position", position);
+        });
+      },
+      20 //拉动多久触发事件，单位ms
+    );
   },
 };
 </script>
-<style scoped>
-</style>
