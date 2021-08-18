@@ -154,6 +154,7 @@ export default {
       //因为用了BS这个插件，所以原本做的原生吸顶没用了
       //解决办法是将tabcontrol复制一份到BS外，利用v-show将在BS里的tab跟外的tab互斥显示
       //但是这里的高度应该要用this.$refs.tabcontrol.$el.offsetTop来获取才对
+      //不然不同的设备在执行的时候会出现问题
       this.tabcontrolshow = -i.y > 610;
     },
     loaditem() {

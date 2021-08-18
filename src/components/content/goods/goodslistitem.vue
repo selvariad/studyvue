@@ -1,13 +1,11 @@
 <template>
-  <div class="goods-item">
-    <a :href="goodsitem.link">
-      <img :src="goodsitem.show.img" alt="" />
-      <div class="goods-info">
-        <p>{{ goodsitem.title }}</p>
-        <span class="price">{{ goodsitem.price }}</span>
-        <span class="collect">{{ goodsitem.cfav }}</span>
-      </div>
-    </a>
+  <div class="goods-item" @click="itemclick">
+    <img :src="goodsitem.show.img" alt="" />
+    <div class="goods-info">
+      <p>{{ goodsitem.title }}</p>
+      <span class="price">{{ goodsitem.price }}</span>
+      <span class="collect">{{ goodsitem.cfav }}</span>
+    </div>
   </div>
 </template>
 <script>
@@ -24,6 +22,10 @@ export default {
   methods: {
     imgload() {
       console.log("load");
+    },
+    itemclick() {
+      //因为进入商品详情页之后还可以用back返回，所以用push
+      this.$router.push("/detail/" + this.goodsitem.iid);
     },
   },
 };
