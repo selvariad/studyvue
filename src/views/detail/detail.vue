@@ -1,19 +1,32 @@
 <template>
-  <div>
+  <div id="detail">
     <detailnavbar></detailnavbar>
-    <detailswiper :itemimg="itemtopimg"></detailswiper>
-    <detailbaseinfo :itemdetail="itemdetail" />
-    <detailshopinfo :shop="shop" />
+    <scroll class="wrapper" ref="scroll" :probe-type="3">
+      <detailswiper :itemimg="itemtopimg"></detailswiper>
+      <detailbaseinfo :itemdetail="itemdetail" />
+      <detailshopinfo :shop="shop" />
+      <detailinfo :detailinfo="detailinfo" />
+      <detailparaminfo :paraminfo="paraminfo" />
+    </scroll>
   </div>
 </template>
 
 <script>
+import scroll from "../../components/common/scroll/scroll";
+
 import detailnavbar from "./childcomps/detailnavbar";
 import detailswiper from "./childcomps/detailswiper";
 import detailbaseinfo from "./childcomps/detailbaseinfo";
 import detailshopinfo from "./childcomps/detailshopinfo";
+import detailinfo from "./childcomps/detailinfo";
+import detailparaminfo from "./childcomps/detailparaminfo";
 
-import { getitemdata, itemdetail, shop } from "../../network/detail";
+import {
+  getitemdata,
+  itemdetail,
+  shop,
+  goodsparam,
+} from "../../network/detail";
 export default {
   name: "detail",
   components: {
@@ -21,6 +34,9 @@ export default {
     detailswiper,
     detailbaseinfo,
     detailshopinfo,
+    scroll,
+    detailinfo,
+    detailparaminfo,
   },
   data() {
     return {
@@ -28,6 +44,8 @@ export default {
       itemtopimg: [],
       itemdetail: {},
       shop: {},
+      detailinfo: {},
+      paraminfo: {},
     };
   },
   created() {
@@ -44,6 +62,13 @@ export default {
         );
         //获取商家店铺信息
         this.shop = new shop(res.data.result.shopInfo);
+        //获取商品的详细数据
+        this.detailinfo = res.data.result.detailInfo;
+        //获取商品的参数
+        this.paraminfo = new goodsparam(
+          res.data.result.itemParams.info,
+          res.data.result.itemParams.rule
+        );
         console.log(res);
       },
       (err) => {
@@ -55,4 +80,14 @@ export default {
 </script>
 
 <style scoped>
+#detail {
+  position: relative;
+  /* 为了完全盖掉主页的navbar所以zindex拉高 */
+  z-index: 9999;
+  background-color: #fff;
+}
+.wrapper {
+  height: 100vh;
+  overflow: hidden;
+}
 </style>

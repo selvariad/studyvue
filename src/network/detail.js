@@ -31,3 +31,11 @@ export class shop {
     this.count = shopInfo.cGoods
   }
 }
+export class goodsparam {
+  constructor(info, rule) {
+    //因为images有些是没有值的，做个判断，没有的话保存为空
+    this.image = info.images ? info.images[0] : ""
+    this.infos = info.set
+    this.sizes = rule.tables
+  }
+}

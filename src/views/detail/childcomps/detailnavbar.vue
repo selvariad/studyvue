@@ -48,8 +48,13 @@ export default {
 </script>
 
 <style scoped>
+.back {
+  position: relative;
+}
 .back img {
-  margin-top: 11px;
+  position: absolute;
+  top: 14px;
+  width: 15px;
 }
 .title {
   display: flex;
@@ -57,6 +62,7 @@ export default {
 .title-item {
   flex: 1;
   font-size: 15px;
+  vertical-align: sub;
 }
 .isactive {
   color: var(--color-high-text);
