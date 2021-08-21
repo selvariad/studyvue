@@ -7,6 +7,11 @@ export function getitemdata(iid) {
     }
   })
 }
+export function getrecommend() {
+  return request({
+    url: '/recommend',
+  })
+}
 //es6可以直接创建一个类对象，然后用构造函数创建结构，这样可以按照你想要的结构保存属性
 // export class obj{constructor(){}}
 export class itemdetail {

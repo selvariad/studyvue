@@ -38,6 +38,7 @@ export default {
   methods: {
     titleclick(index) {
       this.currentindex = index;
+      this.$emit("titleclick", index);
     },
     backclick() {
       this.$router.back();
@@ -62,9 +63,9 @@ export default {
 .title-item {
   flex: 1;
   font-size: 15px;
-  vertical-align: sub;
 }
 .isactive {
   color: var(--color-high-text);
+  border-bottom: 3px solid var(--color-tint);
 }
 </style>

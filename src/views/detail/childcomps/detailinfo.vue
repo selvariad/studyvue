@@ -18,13 +18,42 @@
 </template>
 
 <script>
+// import { debounce } from "../../../components/utils";
 export default {
+  data() {
+    return {
+      end: 0,
+      counter: 0,
+    };
+  },
   props: {
     detailinfo: {
       type: Object,
       default() {
         return {};
       },
+    },
+  },
+  watch: {
+    detailinfo() {
+      this.end = this.detailinfo.detailImage[0].list.length;
+      this.loadend();
+    },
+  },
+  methods: {
+    loadend() {
+      if (this.end !== this.counter) {
+        this.counter++;
+        let timer = null;
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          this.loadend();
+        }, 100);
+      } else {
+        this.$emit("imgload");
+      }
     },
   },
 };

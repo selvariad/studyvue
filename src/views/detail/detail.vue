@@ -1,18 +1,21 @@
 <template>
   <div id="detail">
-    <detailnavbar></detailnavbar>
+    <detailnavbar @titleclick="titleclick" />
     <scroll class="wrapper" ref="scroll" :probe-type="3">
       <detailswiper :itemimg="itemtopimg"></detailswiper>
       <detailbaseinfo :itemdetail="itemdetail" />
       <detailshopinfo :shop="shop" />
-      <detailinfo :detailinfo="detailinfo" />
-      <detailparaminfo :paraminfo="paraminfo" />
+      <detailinfo :detailinfo="detailinfo" @imgload="imgload" />
+      <detailparaminfo ref="param" :paraminfo="paraminfo" />
+      <detailusercomment ref="comment" :comment="comment" />
+      <goodslist ref="recommend" :goods="recommend" />
     </scroll>
   </div>
 </template>
 
 <script>
 import scroll from "../../components/common/scroll/scroll";
+import goodslist from "../../components/content/goods/goodslist";
 
 import detailnavbar from "./childcomps/detailnavbar";
 import detailswiper from "./childcomps/detailswiper";
@@ -20,12 +23,14 @@ import detailbaseinfo from "./childcomps/detailbaseinfo";
 import detailshopinfo from "./childcomps/detailshopinfo";
 import detailinfo from "./childcomps/detailinfo";
 import detailparaminfo from "./childcomps/detailparaminfo";
+import detailusercomment from "./childcomps/detailusercomment";
 
 import {
   getitemdata,
   itemdetail,
   shop,
   goodsparam,
+  getrecommend,
 } from "../../network/detail";
 export default {
   name: "detail",
@@ -37,6 +42,8 @@ export default {
     scroll,
     detailinfo,
     detailparaminfo,
+    detailusercomment,
+    goodslist,
   },
   data() {
     return {
@@ -46,6 +53,9 @@ export default {
       shop: {},
       detailinfo: {},
       paraminfo: {},
+      comment: {},
+      recommend: [],
+      topy: [0],
     };
   },
   created() {
@@ -69,12 +79,43 @@ export default {
           res.data.result.itemParams.info,
           res.data.result.itemParams.rule
         );
+        //获取用户商品评价信息
+        this.comment = res.data.result.rate;
+        // console.log(res);
+        // this.$nextTick(() => {
+        //   // $nextTick是指在DOM渲染完之后会调用
+        //   // better-scroll的计时器也可以换成这个
+        //   // 但是在这里使用的话图片是不一定加载完全了的，只是数据有传送
+        //   this.topy.push(-this.$refs.param.$el.offsetTop);
+        //   this.topy.push(-this.$refs.comment.$el.offsetTop);
+        //   this.topy.push(-this.$refs.recommend.$el.offsetTop);
+        // });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    //请求推荐数据
+    getrecommend().then(
+      (res) => {
+        this.recommend = res.data.data.list;
         console.log(res);
       },
       (err) => {
         console.log(err);
       }
     );
+  },
+  methods: {
+    titleclick(index) {
+      console.log(index);
+      this.$refs.scroll.scrollto(0, this.topy[index], 400);
+    },
+    imgload() {
+      this.topy.push(-this.$refs.param.$el.offsetTop);
+      this.topy.push(-this.$refs.comment.$el.offsetTop);
+      this.topy.push(-this.$refs.recommend.$el.offsetTop);
+    },
   },
 };
 </script>
@@ -87,7 +128,7 @@ export default {
   background-color: #fff;
 }
 .wrapper {
-  height: 100vh;
+  height: 95vh;
   overflow: hidden;
 }
 </style>

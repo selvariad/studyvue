@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemclick">
-    <img :src="goodsitem.show.img" alt="" />
+    <img :src="showimg" alt="" />
     <div class="goods-info">
       <p>{{ goodsitem.title }}</p>
       <span class="price">{{ goodsitem.price }}</span>
@@ -26,6 +26,12 @@ export default {
     itemclick() {
       //因为进入商品详情页之后还可以用back返回，所以用push
       this.$router.push("/detail/" + this.goodsitem.iid);
+    },
+  },
+  computed: {
+    showimg() {
+      //这里是将img的路径做一个判断，确保他在不同的数据来源中都有值
+      return this.goodsitem.image || this.goodsitem.show.img;
     },
   },
 };
