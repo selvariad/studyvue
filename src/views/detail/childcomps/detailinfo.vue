@@ -12,20 +12,14 @@
         :key="index"
         :src="item"
         alt=""
+        @load="imgload"
       />
     </div>
   </div>
 </template>
 
 <script>
-// import { debounce } from "../../../components/utils";
 export default {
-  data() {
-    return {
-      end: 0,
-      counter: 0,
-    };
-  },
   props: {
     detailinfo: {
       type: Object,
@@ -34,26 +28,12 @@ export default {
       },
     },
   },
-  watch: {
-    detailinfo() {
-      this.end = this.detailinfo.detailImage[0].list.length;
-      this.loadend();
-    },
-  },
   methods: {
-    loadend() {
-      if (this.end !== this.counter) {
-        this.counter++;
-        let timer = null;
-        if (timer) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          this.loadend();
-        }, 100);
-      } else {
-        this.$emit("imgload");
-      }
+    imgload() {
+      //在原生中有加载事件xxx.onload = funtion(){} 详见webapi笔记
+      //在vue中有一个封装好的函数@load 也可以实现原生onload一样的功能
+      //给要监听的标签写@load="func"则该标签加载完成后会调用绑定的函数
+      this.$emit("imgload");
     },
   },
 };

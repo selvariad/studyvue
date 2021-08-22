@@ -52,7 +52,7 @@ export default {
           observeImage: true,
         });
         this.bs.on("pullingDown", () => {
-          console.log("下拉刷新");
+          // console.log("下拉刷新");
           //如果遇到莫名其妙的报错，可以在执行函数前面加&&判断
           //例如:this.bs && this.bs.finishPullDown();
           //意思是先判断this.bs是否存在，如果返回undefined或者null
